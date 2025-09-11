@@ -231,15 +231,15 @@ const Quiz = () => {
     setIsLoading(false);
   };
 
-  // AI-generated questions based on category and difficulty
+  // Comprehensive environmental education question database
   const getAIGeneratedQuestions = (category: string, difficulty: string): Question[] => {
     const questionSets = {
       'preschool': {
         'easy': [
           {
-            question: "What color are most leaves?",
+            question: "What color are most healthy leaves?",
             correct_answer: "Green",
-            incorrect_answers: ["Blue", "Red", "Purple"],
+            incorrect_answers: ["Blue", "Purple", "Orange"],
             type: "multiple",
             difficulty: "easy"
           },
@@ -253,14 +253,14 @@ const Quiz = () => {
           {
             question: "What do we put trash in?",
             correct_answer: "Trash can",
-            incorrect_answers: ["River", "Tree", "Sky"],
+            incorrect_answers: ["River", "Forest", "Sky"],
             type: "multiple",
             difficulty: "easy"
           },
           {
             question: "What gives us light during the day?",
             correct_answer: "The Sun",
-            incorrect_answers: ["The Moon", "Stars", "Lightning"],
+            incorrect_answers: ["The Moon", "Stars", "Flashlight"],
             type: "multiple",
             difficulty: "easy"
           },
@@ -268,6 +268,181 @@ const Quiz = () => {
             question: "What do plants need to grow?",
             correct_answer: "Water and sunlight",
             incorrect_answers: ["Only candy", "Only toys", "Only music"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which animal gives us milk?",
+            correct_answer: "Cow",
+            incorrect_answers: ["Fish", "Bird", "Cat"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do bees make?",
+            correct_answer: "Honey",
+            incorrect_answers: ["Milk", "Juice", "Bread"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do birds build their homes?",
+            correct_answer: "In trees",
+            incorrect_answers: ["Under water", "In the ground", "In cars"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What falls from the sky when it rains?",
+            correct_answer: "Water drops",
+            incorrect_answers: ["Leaves", "Toys", "Food"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which one grows in the ground?",
+            correct_answer: "Carrot",
+            incorrect_answers: ["Apple", "Banana", "Orange"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do we breathe?",
+            correct_answer: "Air",
+            incorrect_answers: ["Water", "Food", "Toys"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which season comes after winter?",
+            correct_answer: "Spring",
+            incorrect_answers: ["Summer", "Fall", "Christmas"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do flowers need to grow?",
+            correct_answer: "Soil and water",
+            incorrect_answers: ["Ice cream", "Toys", "TV"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which animal says 'moo'?",
+            correct_answer: "Cow",
+            incorrect_answers: ["Dog", "Cat", "Bird"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What color is the sky on a sunny day?",
+            correct_answer: "Blue",
+            incorrect_answers: ["Red", "Green", "Purple"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do apples grow?",
+            correct_answer: "On trees",
+            incorrect_answers: ["Underground", "In water", "In the sky"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do we use to water plants?",
+            correct_answer: "Watering can",
+            incorrect_answers: ["Hammer", "Book", "Toy"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which insect helps flowers?",
+            correct_answer: "Bee",
+            incorrect_answers: ["Fly", "Mosquito", "Spider"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do we call baby cats?",
+            correct_answer: "Kittens",
+            incorrect_answers: ["Puppies", "Chicks", "Cubs"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do penguins live?",
+            correct_answer: "Cold places",
+            incorrect_answers: ["Hot places", "In trees", "In cars"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do worms help make?",
+            correct_answer: "Good soil",
+            incorrect_answers: ["Toys", "Books", "Cars"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which one is recycled?",
+            correct_answer: "Paper",
+            incorrect_answers: ["Dirt", "Air", "Sunlight"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What sound do ducks make?",
+            correct_answer: "Quack",
+            incorrect_answers: ["Moo", "Woof", "Meow"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do fish swim?",
+            correct_answer: "In water",
+            incorrect_answers: ["In air", "On land", "In trees"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What makes plants green?",
+            correct_answer: "Chlorophyll",
+            incorrect_answers: ["Paint", "Magic", "Mud"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which animal hops?",
+            correct_answer: "Rabbit",
+            incorrect_answers: ["Fish", "Snake", "Turtle"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do pandas eat?",
+            correct_answer: "Bamboo",
+            incorrect_answers: ["Pizza", "Cake", "Ice cream"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do ants live?",
+            correct_answer: "In colonies",
+            incorrect_answers: ["In trees only", "In water only", "In the sky"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What helps us see at night?",
+            correct_answer: "Moon and stars",
+            incorrect_answers: ["Only sun", "Only clouds", "Only rain"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which one is good for Earth?",
+            correct_answer: "Planting trees",
+            incorrect_answers: ["Littering", "Wasting water", "Breaking plants"],
             type: "multiple",
             difficulty: "easy"
           }
@@ -295,20 +470,230 @@ const Quiz = () => {
             incorrect_answers: ["Planting trees", "Using solar panels", "Recycling paper"],
             type: "multiple",
             difficulty: "easy"
+          },
+          {
+            question: "What do we call animals that eat only plants?",
+            correct_answer: "Herbivores",
+            incorrect_answers: ["Carnivores", "Omnivores", "Parasites"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which gas do plants absorb from the air?",
+            correct_answer: "Carbon dioxide",
+            incorrect_answers: ["Oxygen", "Nitrogen", "Hydrogen"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is composting?",
+            correct_answer: "Breaking down organic waste into soil",
+            incorrect_answers: ["Burning waste", "Burying plastic", "Mixing chemicals"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which ocean is the largest?",
+            correct_answer: "Pacific Ocean",
+            incorrect_answers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is biodiversity?",
+            correct_answer: "Variety of life in an ecosystem",
+            incorrect_answers: ["Number of trees", "Amount of water", "Size of animals"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which material takes longest to decompose?",
+            correct_answer: "Plastic",
+            incorrect_answers: ["Paper", "Food scraps", "Wood"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is photosynthesis?",
+            correct_answer: "Plants making food from sunlight",
+            incorrect_answers: ["Animals hunting prey", "Water evaporating", "Rocks forming"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which action saves water?",
+            correct_answer: "Taking shorter showers",
+            incorrect_answers: ["Leaving taps running", "Washing cars daily", "Watering plants at noon"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is an ecosystem?",
+            correct_answer: "Living and non-living things interacting",
+            incorrect_answers: ["Only plants", "Only animals", "Only rocks"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which energy source is unlimited?",
+            correct_answer: "Wind power",
+            incorrect_answers: ["Coal", "Oil", "Natural gas"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is deforestation?",
+            correct_answer: "Cutting down forests",
+            incorrect_answers: ["Planting new trees", "Protecting forests", "Cleaning forests"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which animal is a pollinator?",
+            correct_answer: "Butterfly",
+            incorrect_answers: ["Snake", "Fish", "Turtle"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What causes global warming?",
+            correct_answer: "Too much carbon dioxide in air",
+            incorrect_answers: ["Too much oxygen", "Too much water", "Too many trees"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which is a sustainable practice?",
+            correct_answer: "Using reusable bags",
+            incorrect_answers: ["Using plastic bags once", "Throwing batteries in trash", "Wasting food"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is the water cycle?",
+            correct_answer: "Water moving between earth, air, and back",
+            incorrect_answers: ["Water staying in one place", "Water disappearing forever", "Water only in oceans"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which habitat do polar bears need?",
+            correct_answer: "Arctic ice",
+            incorrect_answers: ["Tropical forests", "Deserts", "Grasslands"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is acid rain caused by?",
+            correct_answer: "Air pollution mixing with rain",
+            incorrect_answers: ["Too much sunlight", "Ocean water", "Plant growth"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which transportation produces least pollution?",
+            correct_answer: "Bicycle",
+            incorrect_answers: ["Car", "Airplane", "Motorcycle"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do coral reefs provide?",
+            correct_answer: "Homes for many sea creatures",
+            incorrect_answers: ["Only food for fish", "Nothing important", "Problems for oceans"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which practice helps soil stay healthy?",
+            correct_answer: "Adding compost",
+            incorrect_answers: ["Using only chemicals", "Never watering", "Removing all plants"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is smog?",
+            correct_answer: "Polluted air that's hard to see through",
+            incorrect_answers: ["Clean mountain air", "Ocean mist", "Plant pollen"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which animals migrate long distances?",
+            correct_answer: "Birds flying south for winter",
+            incorrect_answers: ["House cats", "Pet dogs", "Goldfish"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is conservation?",
+            correct_answer: "Protecting and saving natural resources",
+            incorrect_answers: ["Using everything quickly", "Ignoring nature", "Building everywhere"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which gas do we breathe out?",
+            correct_answer: "Carbon dioxide",
+            incorrect_answers: ["Oxygen", "Nitrogen", "Hydrogen"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What is a food chain?",
+            correct_answer: "How energy passes from one living thing to another",
+            incorrect_answers: ["A chain made of food", "Where food is stored", "How food is cooked"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which material can be recycled many times?",
+            correct_answer: "Aluminum cans",
+            incorrect_answers: ["Styrofoam", "Dirty diapers", "Broken glass mixed with other materials"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What helps prevent erosion?",
+            correct_answer: "Plant roots holding soil",
+            incorrect_answers: ["Removing all plants", "Adding more water", "Making slopes steeper"],
+            type: "multiple",
+            difficulty: "easy"
           }
         ],
         'medium': [
           {
             question: "What is the greenhouse effect?",
             correct_answer: "When gases trap heat in Earth's atmosphere",
-            incorrect_answers: ["When plants grow in greenhouses", "When ice melts", "When it rains"],
+            incorrect_answers: ["When plants grow in greenhouses", "When ice melts", "When it rains heavily"],
             type: "multiple",
             difficulty: "medium"
           },
           {
             question: "Which gas is most responsible for global warming?",
             correct_answer: "Carbon dioxide",
-            incorrect_answers: ["Oxygen", "Nitrogen", "Hydrogen"],
+            incorrect_answers: ["Oxygen", "Nitrogen", "Argon"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "What is eutrophication?",
+            correct_answer: "Excess nutrients causing algae blooms in water",
+            incorrect_answers: ["Fish migration patterns", "Ocean current changes", "Coral bleaching"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "Which layer of atmosphere contains the ozone layer?",
+            correct_answer: "Stratosphere",
+            incorrect_answers: ["Troposphere", "Mesosphere", "Thermosphere"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "What is biomagnification?",
+            correct_answer: "Toxins concentrating as they move up the food chain",
+            incorrect_answers: ["Animals getting larger over time", "Plants growing faster", "Ecosystems expanding"],
             type: "multiple",
             difficulty: "medium"
           }
@@ -317,25 +702,74 @@ const Quiz = () => {
       'high-school': {
         'medium': [
           {
-            question: "What is carbon footprint?",
+            question: "What is a carbon footprint?",
             correct_answer: "The amount of carbon dioxide produced by activities",
-            incorrect_answers: ["Footprint made of carbon", "Black footprints", "Fossil remains"],
+            incorrect_answers: ["Footprint made of carbon", "Black footprints on ground", "Fossil remains in rocks"],
             type: "multiple",
             difficulty: "medium"
           },
           {
-            question: "Which renewable energy source is most efficient?",
+            question: "Which renewable energy source has highest efficiency?",
             correct_answer: "Hydroelectric power",
-            incorrect_answers: ["Solar power", "Wind power", "Geothermal"],
+            incorrect_answers: ["Solar panels", "Wind turbines", "Geothermal"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "What is the main cause of species extinction today?",
+            correct_answer: "Habitat destruction",
+            incorrect_answers: ["Natural disasters", "Disease", "Predation"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "What is bioaccumulation?",
+            correct_answer: "Toxins building up in organism tissues over time",
+            incorrect_answers: ["Animals gathering in groups", "Plants storing energy", "Soil formation"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "Which climate factor affects ocean currents most?",
+            correct_answer: "Temperature and salinity differences",
+            incorrect_answers: ["Wind patterns only", "Moon phases", "Mountain ranges"],
             type: "multiple",
             difficulty: "medium"
           }
         ],
         'hard': [
           {
-            question: "What is the main cause of ocean acidification?",
+            question: "What is the primary cause of ocean acidification?",
             correct_answer: "Absorption of CO2 from the atmosphere",
-            incorrect_answers: ["Industrial waste", "Oil spills", "Plastic pollution"],
+            incorrect_answers: ["Industrial waste dumping", "Oil spills", "Plastic pollution"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the albedo effect?",
+            correct_answer: "Reflection of solar radiation by Earth's surface",
+            incorrect_answers: ["Absorption of heat by oceans", "Greenhouse gas emissions", "Ozone formation"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "Which climate feedback loop accelerates global warming?",
+            correct_answer: "Ice-albedo feedback",
+            incorrect_answers: ["Cloud formation feedback", "Forest growth feedback", "Ocean circulation feedback"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is nitrogen fixation?",
+            correct_answer: "Converting atmospheric nitrogen to usable forms",
+            incorrect_answers: ["Removing nitrogen from soil", "Creating nitrogen gas", "Storing nitrogen in rocks"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What causes thermal stratification in lakes?",
+            correct_answer: "Temperature differences creating distinct layers",
+            incorrect_answers: ["Chemical pollution", "Fish migration", "Seasonal rainfall"],
             type: "multiple",
             difficulty: "hard"
           }
@@ -344,16 +778,107 @@ const Quiz = () => {
       'college': {
         'hard': [
           {
-            question: "What is the albedo effect?",
-            correct_answer: "The reflection of solar radiation by Earth's surface",
-            incorrect_answers: ["Absorption of heat by oceans", "Emission of greenhouse gases", "Formation of ozone"],
+            question: "What is the thermohaline circulation?",
+            correct_answer: "Global ocean circulation driven by temperature and salinity",
+            incorrect_answers: ["Atmospheric pressure systems", "Tidal movements", "Wind-driven surface currents only"],
             type: "multiple",
             difficulty: "hard"
           },
           {
-            question: "Which climate feedback loop accelerates global warming?",
-            correct_answer: "Ice-albedo feedback",
-            incorrect_answers: ["Cloud formation", "Plant photosynthesis", "Ocean circulation"],
+            question: "Which climate sensitivity parameter is most uncertain in models?",
+            correct_answer: "Cloud feedback mechanisms",
+            incorrect_answers: ["Solar radiation variations", "Ocean heat capacity", "Land surface albedo"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is environmental justice?",
+            correct_answer: "Fair treatment of all people regardless of race or income in environmental matters",
+            incorrect_answers: ["Legal system for environmental crimes", "Justice for animals only", "Court system for pollution cases"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the tragedy of the commons?",
+            correct_answer: "Overuse of shared resources due to individual self-interest",
+            incorrect_answers: ["Accidental resource destruction", "Government resource control", "Natural resource depletion by nature"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is ecosystem resilience?",
+            correct_answer: "Ability to recover from disturbances and maintain function",
+            incorrect_answers: ["Resistance to any change", "Maximum biodiversity possible", "Largest size an ecosystem can reach"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the IPAT equation used for?",
+            correct_answer: "Calculating environmental impact from population and technology",
+            incorrect_answers: ["Measuring biodiversity", "Calculating carbon sequestration", "Determining species extinction rates"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is a tipping point in climate systems?",
+            correct_answer: "Threshold beyond which changes become irreversible",
+            incorrect_answers: ["Maximum temperature increase", "Point of optimal climate conditions", "Average global temperature"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is biogeochemical cycling?",
+            correct_answer: "Movement of chemical elements through living and non-living components",
+            incorrect_answers: ["Only biological processes", "Only geological processes", "Only chemical reactions"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is adaptive management in conservation?",
+            correct_answer: "Management that adjusts based on monitoring and learning",
+            incorrect_answers: ["Fixed management strategies", "Only reactive management", "Management without monitoring"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the precautionary principle?",
+            correct_answer: "Taking preventive action despite scientific uncertainty",
+            incorrect_answers: ["Waiting for complete scientific proof", "Ignoring potential risks", "Only acting on proven facts"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is ecological footprint analysis?",
+            correct_answer: "Measuring human demand on ecosystems in terms of biologically productive area",
+            incorrect_answers: ["Counting animal footprints", "Measuring actual land area used", "Calculating population density"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the concept of planetary boundaries?",
+            correct_answer: "Earth system processes that define safe operating space for humanity",
+            incorrect_answers: ["Physical borders between countries", "Limits of space exploration", "Boundaries between ecosystems"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is environmental economics externality?",
+            correct_answer: "Cost or benefit affecting parties not involved in economic transaction",
+            incorrect_answers: ["All environmental costs", "Government regulations only", "International trade effects only"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is metapopulation dynamics?",
+            correct_answer: "Interactions between separated populations connected by migration",
+            incorrect_answers: ["Large population growth only", "Single isolated populations", "Populations above carrying capacity"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "What is the concept of natural capital?",
+            correct_answer: "Stock of natural resources that provide ecosystem services",
+            incorrect_answers: ["Money invested in nature", "Number of natural areas", "Government environmental funding"],
             type: "multiple",
             difficulty: "hard"
           }
