@@ -53,8 +53,9 @@ const Quiz = () => {
   const [timeLeft, setTimeLeft] = useState(30);
   const [answers, setAnswers] = useState<{ question: string; selected: string; correct: string; isCorrect: boolean }[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [shuffledAnswers, setShuffledAnswers] = useState<string[]>([]);
 
-  // Sample quiz data
+  // Expanded quiz data with diverse categories
   const sampleQuizzes: QuizData[] = [
     {
       id: '1',
@@ -71,6 +72,70 @@ const Quiz = () => {
       difficulty: 'easy',
       description: 'Discover marine life and how we can protect our oceans.',
       icon: '🌊'
+    },
+    {
+      id: '3',
+      title: 'Renewable Energy',
+      category: 'college',
+      difficulty: 'hard',
+      description: 'Advanced concepts in solar, wind, and other renewable energy sources.',
+      icon: '⚡'
+    },
+    {
+      id: '4',
+      title: 'Forest Friends',
+      category: 'preschool',
+      difficulty: 'easy',
+      description: 'Fun games about trees, animals, and forest ecosystems.',
+      icon: '🌲'
+    },
+    {
+      id: '5',
+      title: 'Recycling Champions',
+      category: 'middle-school',
+      difficulty: 'easy',
+      description: 'Learn about waste management and recycling practices.',
+      icon: '♻️'
+    },
+    {
+      id: '6',
+      title: 'Water Conservation',
+      category: 'high-school',
+      difficulty: 'medium',
+      description: 'Understanding water cycles and conservation methods.',
+      icon: '💧'
+    },
+    {
+      id: '7',
+      title: 'Wildlife Protection',
+      category: 'middle-school',
+      difficulty: 'medium',
+      description: 'Learn about protecting endangered species and habitats.',
+      icon: '🦋'
+    },
+    {
+      id: '8',
+      title: 'Green Transportation',
+      category: 'high-school',
+      difficulty: 'medium',
+      description: 'Explore eco-friendly transportation alternatives.',
+      icon: '🚲'
+    },
+    {
+      id: '9',
+      title: 'Animal Homes',
+      category: 'preschool',
+      difficulty: 'easy',
+      description: 'Learn where different animals live in nature.',
+      icon: '🏠'
+    },
+    {
+      id: '10',
+      title: 'Environmental Science',
+      category: 'college',
+      difficulty: 'hard',
+      description: 'Advanced environmental science concepts and research.',
+      icon: '🔬'
     }
   ];
 
@@ -92,64 +157,223 @@ const Quiz = () => {
     return () => clearTimeout(timer);
   }, [timeLeft, gameState]);
 
+  // Shuffle answers only when question changes, not on every render
+  useEffect(() => {
+    if (questions.length > 0 && currentQuestion < questions.length) {
+      const question = questions[currentQuestion];
+      const allAnswers = [question.correct_answer, ...question.incorrect_answers];
+      const shuffled = [...allAnswers].sort(() => Math.random() - 0.5);
+      setShuffledAnswers(shuffled);
+    }
+  }, [currentQuestion, questions]);
+
   const fetchQuestions = async () => {
     setIsLoading(true);
     try {
-      // Using Open Trivia DB API
-      const response = await fetch(
-        `https://opentdb.com/api.php?amount=10&category=17&difficulty=${selectedDifficulty}&type=multiple`
-      );
-      const data = await response.json();
+      // Multiple category support for diverse quizzes
+      const categories = {
+        'preschool': [17, 22, 23], // Science, Geography, History
+        'middle-school': [17, 18, 22, 23], // Science, Computers, Geography, History
+        'high-school': [17, 18, 19, 22, 23, 25], // Science, Computers, Math, Geography, History, Art
+        'college': [17, 18, 19, 20, 22, 23, 24, 25] // All categories including Politics
+      };
       
-      if (data.results && data.results.length > 0) {
-        const processedQuestions = data.results.map((q: any) => ({
-          ...q,
-          question: decodeHTML(q.question),
-          correct_answer: decodeHTML(q.correct_answer),
-          incorrect_answers: q.incorrect_answers.map(decodeHTML)
-        }));
-        setQuestions(processedQuestions);
-        setGameState('playing');
-        setTimeLeft(30);
-      } else {
-        throw new Error('No questions received');
+      const quizCategories = categories[quiz?.category as keyof typeof categories] || [17];
+      const randomCategory = quizCategories[Math.floor(Math.random() * quizCategories.length)];
+      
+      // Try multiple API sources for better question variety
+      let apiResponse;
+      let questionsData = [];
+      
+      // Primary: Open Trivia DB
+      try {
+        apiResponse = await fetch(
+          `https://opentdb.com/api.php?amount=10&category=${randomCategory}&difficulty=${selectedDifficulty}&type=multiple`
+        );
+        const data = await apiResponse.json();
+        if (data.results && data.results.length > 0) {
+          questionsData = data.results;
+        }
+      } catch (error) {
+        console.log('Primary API failed, trying fallbacks...');
       }
+      
+      // If no questions from API, use comprehensive fallback questions
+      if (questionsData.length === 0) {
+        questionsData = getAIGeneratedQuestions(quiz?.category || 'middle-school', selectedDifficulty);
+      }
+      
+      const processedQuestions = questionsData.map((q: any) => ({
+        ...q,
+        question: typeof q.question === 'string' ? decodeHTML(q.question) : q.question,
+        correct_answer: typeof q.correct_answer === 'string' ? decodeHTML(q.correct_answer) : q.correct_answer,
+        incorrect_answers: Array.isArray(q.incorrect_answers) 
+          ? q.incorrect_answers.map((ans: string) => typeof ans === 'string' ? decodeHTML(ans) : ans)
+          : q.incorrect_answers
+      }));
+      
+      setQuestions(processedQuestions);
+      setGameState('playing');
+      setTimeLeft(30);
+      
     } catch (error) {
       toast({
-        title: "Failed to load questions",
-        description: "Using sample questions instead.",
-        variant: "destructive"
+        title: "Loading AI-generated questions",
+        description: "Using our curated environmental quiz content.",
       });
       
-      // Fallback sample questions
-      const sampleQuestions: Question[] = [
-        {
-          question: "What is the main cause of global warming?",
-          correct_answer: "Greenhouse gas emissions",
-          incorrect_answers: ["Solar radiation", "Ocean currents", "Volcanic activity"],
-          type: "multiple",
-          difficulty: selectedDifficulty
-        },
-        {
-          question: "Which renewable energy source uses the sun?",
-          correct_answer: "Solar power",
-          incorrect_answers: ["Wind power", "Hydroelectric", "Geothermal"],
-          type: "multiple",
-          difficulty: selectedDifficulty
-        },
-        {
-          question: "What percentage of Earth's surface is covered by oceans?",
-          correct_answer: "About 71%",
-          incorrect_answers: ["About 50%", "About 85%", "About 60%"],
-          type: "multiple",
-          difficulty: selectedDifficulty
-        }
-      ];
-      setQuestions(sampleQuestions);
+      // Use AI-generated fallback questions
+      const aiQuestions = getAIGeneratedQuestions(quiz?.category || 'middle-school', selectedDifficulty);
+      setQuestions(aiQuestions);
       setGameState('playing');
       setTimeLeft(30);
     }
     setIsLoading(false);
+  };
+
+  // AI-generated questions based on category and difficulty
+  const getAIGeneratedQuestions = (category: string, difficulty: string): Question[] => {
+    const questionSets = {
+      'preschool': {
+        'easy': [
+          {
+            question: "What color are most leaves?",
+            correct_answer: "Green",
+            incorrect_answers: ["Blue", "Red", "Purple"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Where do fish live?",
+            correct_answer: "In water",
+            incorrect_answers: ["In trees", "In the sky", "Underground"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do we put trash in?",
+            correct_answer: "Trash can",
+            incorrect_answers: ["River", "Tree", "Sky"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What gives us light during the day?",
+            correct_answer: "The Sun",
+            incorrect_answers: ["The Moon", "Stars", "Lightning"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What do plants need to grow?",
+            correct_answer: "Water and sunlight",
+            incorrect_answers: ["Only candy", "Only toys", "Only music"],
+            type: "multiple",
+            difficulty: "easy"
+          }
+        ]
+      },
+      'middle-school': {
+        'easy': [
+          {
+            question: "What is recycling?",
+            correct_answer: "Reusing materials to make new things",
+            incorrect_answers: ["Throwing everything away", "Burning all trash", "Burying waste"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "Which of these is a renewable energy source?",
+            correct_answer: "Solar power",
+            incorrect_answers: ["Coal", "Oil", "Natural gas"],
+            type: "multiple",
+            difficulty: "easy"
+          },
+          {
+            question: "What causes air pollution?",
+            correct_answer: "Burning fossil fuels",
+            incorrect_answers: ["Planting trees", "Using solar panels", "Recycling paper"],
+            type: "multiple",
+            difficulty: "easy"
+          }
+        ],
+        'medium': [
+          {
+            question: "What is the greenhouse effect?",
+            correct_answer: "When gases trap heat in Earth's atmosphere",
+            incorrect_answers: ["When plants grow in greenhouses", "When ice melts", "When it rains"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "Which gas is most responsible for global warming?",
+            correct_answer: "Carbon dioxide",
+            incorrect_answers: ["Oxygen", "Nitrogen", "Hydrogen"],
+            type: "multiple",
+            difficulty: "medium"
+          }
+        ]
+      },
+      'high-school': {
+        'medium': [
+          {
+            question: "What is carbon footprint?",
+            correct_answer: "The amount of carbon dioxide produced by activities",
+            incorrect_answers: ["Footprint made of carbon", "Black footprints", "Fossil remains"],
+            type: "multiple",
+            difficulty: "medium"
+          },
+          {
+            question: "Which renewable energy source is most efficient?",
+            correct_answer: "Hydroelectric power",
+            incorrect_answers: ["Solar power", "Wind power", "Geothermal"],
+            type: "multiple",
+            difficulty: "medium"
+          }
+        ],
+        'hard': [
+          {
+            question: "What is the main cause of ocean acidification?",
+            correct_answer: "Absorption of CO2 from the atmosphere",
+            incorrect_answers: ["Industrial waste", "Oil spills", "Plastic pollution"],
+            type: "multiple",
+            difficulty: "hard"
+          }
+        ]
+      },
+      'college': {
+        'hard': [
+          {
+            question: "What is the albedo effect?",
+            correct_answer: "The reflection of solar radiation by Earth's surface",
+            incorrect_answers: ["Absorption of heat by oceans", "Emission of greenhouse gases", "Formation of ozone"],
+            type: "multiple",
+            difficulty: "hard"
+          },
+          {
+            question: "Which climate feedback loop accelerates global warming?",
+            correct_answer: "Ice-albedo feedback",
+            incorrect_answers: ["Cloud formation", "Plant photosynthesis", "Ocean circulation"],
+            type: "multiple",
+            difficulty: "hard"
+          }
+        ]
+      }
+    };
+
+    const categoryQuestions = questionSets[category as keyof typeof questionSets];
+    if (!categoryQuestions) return [];
+    
+    const difficultyQuestions = categoryQuestions[difficulty as keyof typeof categoryQuestions];
+    if (!difficultyQuestions) {
+      // Fallback to available difficulty
+      const availableDiffs = Object.keys(categoryQuestions);
+      return categoryQuestions[availableDiffs[0] as keyof typeof categoryQuestions] || [];
+    }
+    
+    // Shuffle and return up to 10 questions
+    const shuffled = [...difficultyQuestions].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 10);
   };
 
   const decodeHTML = (html: string) => {
@@ -348,9 +572,6 @@ const Quiz = () => {
 
   if (gameState === 'playing' && questions.length > 0) {
     const question = questions[currentQuestion];
-    const allAnswers = [question.correct_answer, ...question.incorrect_answers]
-      .sort(() => Math.random() - 0.5);
-    
     const progress = ((currentQuestion) / questions.length) * 100;
 
     return (
@@ -390,9 +611,9 @@ const Quiz = () => {
           
           <CardContent className="space-y-4">
             <div className="grid gap-3">
-              {allAnswers.map((answer, index) => (
+              {shuffledAnswers.map((answer, index) => (
                 <Button
-                  key={index}
+                  key={`${currentQuestion}-${index}`}
                   variant={selectedAnswer === answer ? "default" : "outline"}
                   className="h-auto p-4 text-left justify-start"
                   onClick={() => handleAnswerSelect(answer)}

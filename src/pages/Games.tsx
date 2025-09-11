@@ -41,7 +41,7 @@ const Games = () => {
   const [selectedDifficulty, setSelectedDifficulty] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Sample quiz data - in a real app, this would come from an API
+  // Expanded quiz data with AI-curated content
   const sampleQuizzes: Quiz[] = [
     {
       id: '1',
@@ -113,15 +113,14 @@ const Games = () => {
     },
     {
       id: '7',
-      title: 'Endangered Species',
-      category: 'college',
-      difficulty: 'hard',
-      participants: 298,
-      duration: 18,
-      description: 'Study biodiversity loss and species conservation efforts.',
-      icon: '🐅',
-      points: 180,
-      recommended: true
+      title: 'Wildlife Protection',
+      category: 'middle-school',
+      difficulty: 'medium',
+      participants: 542,
+      duration: 12,
+      description: 'Learn about protecting endangered species and habitats.',
+      icon: '🦋',
+      points: 120
     },
     {
       id: '8',
@@ -133,6 +132,139 @@ const Games = () => {
       description: 'Explore eco-friendly transportation alternatives.',
       icon: '🚲',
       points: 130
+    },
+    {
+      id: '9',
+      title: 'Animal Homes',
+      category: 'preschool',
+      difficulty: 'easy',
+      participants: 689,
+      duration: 8,
+      description: 'Learn where different animals live in nature.',
+      icon: '🏠',
+      points: 80
+    },
+    {
+      id: '10',
+      title: 'Environmental Science',
+      category: 'college',
+      difficulty: 'hard',
+      participants: 298,
+      duration: 25,
+      description: 'Advanced environmental science concepts and research.',
+      icon: '🔬',
+      points: 250,
+      recommended: true
+    },
+    {
+      id: '11',
+      title: 'Plant Power',
+      category: 'preschool',
+      difficulty: 'easy',
+      participants: 445,
+      duration: 6,
+      description: 'Discover how plants help our environment and grow.',
+      icon: '🌱',
+      points: 70
+    },
+    {
+      id: '12',
+      title: 'Pollution Prevention',
+      category: 'middle-school',
+      difficulty: 'medium',
+      participants: 678,
+      duration: 14,
+      description: 'Learn about different types of pollution and prevention methods.',
+      icon: '🏭',
+      points: 140
+    },
+    {
+      id: '13',
+      title: 'Sustainable Living',
+      category: 'high-school',
+      difficulty: 'hard',
+      participants: 387,
+      duration: 18,
+      description: 'Advanced concepts in sustainable lifestyle choices.',
+      icon: '🌍',
+      points: 180
+    },
+    {
+      id: '14',
+      title: 'Weather Wonders',
+      category: 'preschool',
+      difficulty: 'easy',
+      participants: 523,
+      duration: 7,
+      description: 'Fun facts about weather patterns and seasons.',
+      icon: '🌤️',
+      points: 85
+    },
+    {
+      id: '15',
+      title: 'Ecosystem Balance',
+      category: 'college',
+      difficulty: 'hard',
+      participants: 234,
+      duration: 22,
+      description: 'Understanding complex ecosystem interactions and balance.',
+      icon: '⚖️',
+      points: 220
+    },
+    {
+      id: '16',
+      title: 'Green Technology',
+      category: 'high-school',
+      difficulty: 'hard',
+      participants: 345,
+      duration: 16,
+      description: 'Explore cutting-edge environmental technologies.',
+      icon: '💻',
+      points: 160
+    },
+    {
+      id: '17',
+      title: 'Nature Sounds',
+      category: 'preschool',
+      difficulty: 'easy',
+      participants: 612,
+      duration: 5,
+      description: 'Learn about sounds animals and nature make.',
+      icon: '🎵',
+      points: 65
+    },
+    {
+      id: '18',
+      title: 'Earth Day Heroes',
+      category: 'middle-school',
+      difficulty: 'easy',
+      participants: 834,
+      duration: 11,
+      description: 'Learn about environmental heroes and their contributions.',
+      icon: '🦸',
+      points: 110
+    },
+    {
+      id: '19',
+      title: 'Carbon Cycle',
+      category: 'college',
+      difficulty: 'medium',
+      participants: 456,
+      duration: 19,
+      description: 'Understanding the carbon cycle and its environmental impact.',
+      icon: '🔄',
+      points: 190
+    },
+    {
+      id: '20',
+      title: 'Biodiversity Basics',
+      category: 'high-school',
+      difficulty: 'medium',
+      participants: 567,
+      duration: 13,
+      description: 'Explore the importance of biodiversity in ecosystems.',
+      icon: '🐛',
+      points: 135
     }
   ];
 
