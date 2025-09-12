@@ -16,7 +16,8 @@ import {
   Gamepad2, 
   LogOut, 
   LogIn,
-  Leaf
+  Leaf,
+  PlayCircle
 } from 'lucide-react';
 import logoImage from '@/assets/logo.png';
 
@@ -33,6 +34,7 @@ const Header = () => {
   const navigationItems = [
     { label: 'Home', href: '/' },
     { label: 'Games', href: '/games', icon: Gamepad2 },
+    { label: 'Videos', href: '/videos', icon: PlayCircle },
     { label: 'Achievements', href: '/achievements', icon: Trophy },
   ];
 

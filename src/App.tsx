@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Games from "./pages/Games";
+import Videos from "./pages/Videos";
 import Profile from "./pages/Profile";
 import Achievements from "./pages/Achievements";
 import Quiz from "./pages/Quiz";
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/games" element={<Games />} />
+                <Route path="/videos" element={<Videos />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/achievements" element={<Achievements />} />
                 <Route path="/quiz/:id" element={<Quiz />} />
