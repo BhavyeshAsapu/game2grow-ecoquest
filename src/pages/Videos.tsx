@@ -12,21 +12,18 @@ const Videos = () => {
           title: "What is Climate Change?",
           description: "An animated introduction to climate change for all ages",
           duration: "3:45",
-          thumbnail: "https://via.placeholder.com/320x180?text=Climate+Change",
           embedId: "EuwNzamUvSs"
         },
         {
           title: "Greenhouse Effect Explained",
           description: "Understanding how greenhouse gases work",
           duration: "4:20",
-          thumbnail: "https://via.placeholder.com/320x180?text=Greenhouse+Effect",
           embedId: "SN5-DnOHQmE"
         },
         {
           title: "Climate vs Weather",
           description: "Learn the difference between climate and weather patterns",
           duration: "2:55",
-          thumbnail: "https://via.placeholder.com/320x180?text=Climate+vs+Weather",
           embedId: "e6FcNgOHYoo"
         }
       ]
@@ -39,21 +36,18 @@ const Videos = () => {
           title: "Solar Energy for Kids",
           description: "How solar panels work and why they're important",
           duration: "5:10",
-          thumbnail: "https://via.placeholder.com/320x180?text=Solar+Energy",
           embedId: "xKxrkht7CpY"
         },
         {
           title: "Wind Power Animation",
           description: "Discover how wind turbines generate clean energy",
           duration: "3:30",
-          thumbnail: "https://via.placeholder.com/320x180?text=Wind+Power",
           embedId: "tsZoz2mdYhc"
         },
         {
           title: "Hydroelectric Power",
           description: "Learn about water-powered electricity generation",
           duration: "4:15",
-          thumbnail: "https://via.placeholder.com/320x180?text=Hydroelectric",
           embedId: "q8HmRLl8lDk"
         }
       ]
@@ -66,21 +60,18 @@ const Videos = () => {
           title: "The Journey of Recycled Materials",
           description: "Follow recyclables from bin to new products",
           duration: "6:25",
-          thumbnail: "https://via.placeholder.com/320x180?text=Recycling+Journey",
           embedId: "6jQ7y_qQYuA"
         },
         {
           title: "Reduce, Reuse, Recycle",
           description: "The three R's of environmental protection",
           duration: "4:40",
-          thumbnail: "https://via.placeholder.com/320x180?text=3+Rs",
           embedId: "AR4jbIk5I_8"
         },
         {
           title: "Plastic Pollution Solutions",
           description: "Understanding and solving the plastic problem",
           duration: "5:55",
-          thumbnail: "https://via.placeholder.com/320x180?text=Plastic+Pollution",
           embedId: "RS7IzU2VJIQ"
         }
       ]
@@ -93,31 +84,25 @@ const Videos = () => {
           title: "Water Cycle Adventure",
           description: "An animated journey through the water cycle",
           duration: "3:20",
-          thumbnail: "https://via.placeholder.com/320x180?text=Water+Cycle",
           embedId: "al-do-yS3Rg"
         },
         {
           title: "Save Water, Save Life",
           description: "Simple ways kids can conserve water daily",
           duration: "4:05",
-          thumbnail: "https://via.placeholder.com/320x180?text=Save+Water",
           embedId: "ocRzGCfYZ7o"
         },
         {
           title: "Ocean Conservation",
           description: "Protecting our oceans and marine life",
           duration: "5:30",
-          thumbnail: "https://via.placeholder.com/320x180?text=Ocean+Conservation",
           embedId: "CqPUTiNTKrE"
         }
       ]
     }
   ];
 
-  const handleVideoPlay = (embedId: string) => {
-    // Open video in new tab
-    window.open(`https://www.youtube.com/watch?v=${embedId}`, '_blank');
-  };
+  const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -143,18 +128,42 @@ const Videos = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {category.videos.map((video, videoIndex) => (
-                <Card key={videoIndex} className="group cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105">
+                <Card key={videoIndex} className="group hover:shadow-lg transition-all duration-300 hover:scale-105">
                   <CardHeader className="p-0">
-                    <div 
-                      className="relative overflow-hidden rounded-t-lg bg-muted h-48 flex items-center justify-center group-hover:bg-muted/80 transition-colors"
-                      onClick={() => handleVideoPlay(video.embedId)}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary-glow/20" />
-                      <PlayCircle className="w-16 h-16 text-primary group-hover:scale-110 transition-transform" />
-                      <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        {video.duration}
-                      </div>
+                    <div className="relative overflow-hidden rounded-t-lg h-48">
+                      {selectedVideo === video.embedId ? (
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          src={`https://www.youtube.com/embed/${video.embedId}?autoplay=1`}
+                          title={video.title}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="rounded-t-lg"
+                        />
+                      ) : (
+                        <div 
+                          className="relative w-full h-full cursor-pointer group-hover:bg-muted/80 transition-colors"
+                          onClick={() => setSelectedVideo(video.embedId)}
+                        >
+                          <img
+                            src={`https://img.youtube.com/vi/${video.embedId}/maxresdefault.jpg`}
+                            alt={video.title}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.currentTarget.src = `https://img.youtube.com/vi/${video.embedId}/hqdefault.jpg`;
+                            }}
+                          />
+                          <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                            <PlayCircle className="w-16 h-16 text-white group-hover:scale-110 transition-transform" />
+                          </div>
+                          <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded text-sm flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {video.duration}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
