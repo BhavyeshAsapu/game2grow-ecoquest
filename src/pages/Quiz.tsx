@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -16,7 +16,8 @@ import {
   RotateCcw,
   Brain,
   Target,
-  Zap
+  Zap,
+  LogIn
 } from 'lucide-react';
 
 interface Question {
@@ -42,6 +43,67 @@ const Quiz = () => {
   const navigate = useNavigate();
   const { user, updatePoints, addAchievement, isAuthenticated } = useAuth();
   const { toast } = useToast();
+
+  // If user is not authenticated, show login prompt
+  if (!isAuthenticated) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="mb-8">
+            <Brain className="w-16 h-16 mx-auto text-primary mb-4" />
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              Environmental Quiz
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Access to our educational quizzes is available for registered users only. 
+              Join our learning community to test your environmental knowledge and earn points!
+            </p>
+          </div>
+          
+          <Card className="p-8 bg-primary/5 border-primary/20">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Sign in to start quizzes</h3>
+              <p className="text-muted-foreground">
+                Our quiz library includes:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <Target className="w-4 h-4 text-primary" />
+                  Multiple difficulty levels
+                </div>
+                <div className="flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-primary" />
+                  Points and achievements
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-primary" />
+                  Progress tracking
+                </div>
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" />
+                  Interactive learning
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <Button asChild>
+                  <Link to="/login">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to="/register">
+                    Create Account
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   const [quiz, setQuiz] = useState<QuizData | null>(null);
   const [questions, setQuestions] = useState<Question[]>([]);

@@ -1,8 +1,75 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlayCircle, Clock, Leaf, Recycle, Zap, Droplets } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { PlayCircle, Clock, Leaf, Recycle, Zap, Droplets, Lock, LogIn } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Videos = () => {
+  const { isAuthenticated } = useAuth();
+  const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null);
+
+  // If user is not authenticated, show login prompt
+  if (!isAuthenticated) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="mb-8">
+            <Lock className="w-16 h-16 mx-auto text-primary mb-4" />
+            <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
+              Educational Videos
+            </h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Access to our educational video library is available for registered users only. 
+              Join our learning community to unlock exclusive environmental education content!
+            </p>
+          </div>
+          
+          <Card className="p-8 bg-primary/5 border-primary/20">
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold">Sign in to watch videos</h3>
+              <p className="text-muted-foreground">
+                Our curated collection of educational videos covers:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div className="flex items-center gap-2">
+                  <Leaf className="w-4 h-4 text-primary" />
+                  Climate Change Education
+                </div>
+                <div className="flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" />
+                  Renewable Energy
+                </div>
+                <div className="flex items-center gap-2">
+                  <Recycle className="w-4 h-4 text-primary" />
+                  Sustainability & Recycling
+                </div>
+                <div className="flex items-center gap-2">
+                  <Droplets className="w-4 h-4 text-primary" />
+                  Water Conservation
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <Button asChild>
+                  <Link to="/login">
+                    <LogIn className="w-4 h-4 mr-2" />
+                    Sign In
+                  </Link>
+                </Button>
+                <Button variant="outline" asChild>
+                  <Link to="/register">
+                    Create Account
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   const videoCategories = [
     {
       title: "Climate Change Basics",
@@ -101,8 +168,6 @@ const Videos = () => {
       ]
     }
   ];
-
-  const [selectedVideo, setSelectedVideo] = React.useState<string | null>(null);
 
   return (
     <div className="container mx-auto px-4 py-8">
