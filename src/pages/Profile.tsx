@@ -6,8 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { 
   User, 
-  Mail, 
-  Phone, 
+  Mail,
   Calendar, 
   Trophy, 
   Star,
@@ -79,12 +78,12 @@ const Profile = () => {
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Full Name</label>
-                  <p className="text-lg">{user.fullName} {user.surname}</p>
+                  <label className="text-sm font-medium text-muted-foreground">Username</label>
+                  <p className="text-lg">{user.username}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-muted-foreground">Nickname</label>
-                  <p className="text-lg">{user.nickname}</p>
+                  <label className="text-sm font-medium text-muted-foreground">Email</label>
+                  <p className="text-lg">{user.email}</p>
                 </div>
               </div>
               
@@ -97,10 +96,10 @@ const Profile = () => {
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-muted-foreground" />
+                  <Mail className="w-4 h-4 text-muted-foreground" />
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                    <p>{user.phoneNumber}</p>
+                    <label className="text-sm font-medium text-muted-foreground">Email</label>
+                    <p>{user.email}</p>
                   </div>
                 </div>
               </div>
@@ -114,7 +113,7 @@ const Profile = () => {
                   <Calendar className="w-4 h-4 text-muted-foreground" />
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">Joined</label>
-                    <p>{new Date(user.joinedAt).toLocaleDateString()}</p>
+                    <p>{new Date(user.created_at).toLocaleDateString()}</p>
                   </div>
                 </div>
               </div>

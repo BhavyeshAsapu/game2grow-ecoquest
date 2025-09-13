@@ -14,7 +14,77 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      achievements: {
+        Row: {
+          description: string | null
+          earned_at: string
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          description?: string | null
+          earned_at?: string
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          description?: string | null
+          earned_at?: string
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "achievements_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          category: Database["public"]["Enums"]["user_category"]
+          created_at: string
+          email: string
+          id: string
+          level: number
+          points: number
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          category?: Database["public"]["Enums"]["user_category"]
+          created_at?: string
+          email: string
+          id?: string
+          level?: number
+          points?: number
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          avatar_url?: string | null
+          category?: Database["public"]["Enums"]["user_category"]
+          created_at?: string
+          email?: string
+          id?: string
+          level?: number
+          points?: number
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +93,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      user_category: "student" | "teacher" | "parent" | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +220,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_category: ["student", "teacher", "parent", "other"],
+    },
   },
 } as const

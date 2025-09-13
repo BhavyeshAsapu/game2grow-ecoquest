@@ -112,7 +112,7 @@ const Home = () => {
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="text-sm text-muted-foreground">Welcome back,</p>
-                          <h3 className="text-lg font-semibold text-primary">{user?.fullName}!</h3>
+                          <h3 className="text-lg font-semibold text-primary">{user?.username}!</h3>
                           <p className="text-sm">Level {user?.level} • {user?.points} points</p>
                         </div>
                         <div className="flex items-center space-x-1 text-primary">

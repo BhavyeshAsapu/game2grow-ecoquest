@@ -1,29 +1,41 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { User as SupabaseUser, Session } from '@supabase/supabase-js';
+import { useToast } from '@/hooks/use-toast';
 
-export type UserCategory = 'preschool' | 'middle-school' | 'high-school' | 'college';
+export type UserCategory = 'student' | 'teacher' | 'parent' | 'other';
 
 export interface User {
   id: string;
-  fullName: string;
-  surname: string;
-  nickname: string;
+  user_id: string;
+  username: string;
   email: string;
-  phoneNumber: string;
   category: UserCategory;
   points: number;
   level: number;
-  achievements: string[];
-  joinedAt: Date;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Achievement {
+  id: string;
+  user_id: string;
+  title: string;
+  description?: string;
+  earned_at: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (userData: Omit<User, 'id' | 'points' | 'level' | 'achievements' | 'joinedAt'> & { password: string }) => Promise<boolean>;
-  logout: () => void;
-  updatePoints: (points: number) => void;
-  addAchievement: (achievement: string) => void;
+  session: Session | null;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  register: (userData: { username: string; email: string; password: string; category: UserCategory }) => Promise<{ success: boolean; error?: string }>;
+  logout: () => Promise<void>;
+  updatePoints: (points: number) => Promise<void>;
+  addAchievement: (title: string, description?: string) => Promise<void>;
   isAuthenticated: boolean;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -38,140 +50,151 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Check for stored user session on app load
-    const storedUser = localStorage.getItem('game2grow_user');
-    if (storedUser) {
-      const userData = JSON.parse(storedUser);
-      setUser(userData);
-      setIsAuthenticated(true);
-    }
-    
-    // Create demo user account if it doesn't exist
-    const storedUsers = JSON.parse(localStorage.getItem('game2grow_users') || '[]');
-    const demoUserExists = storedUsers.find((u: any) => u.email === 'demo@game2grow.edu');
-    
-    if (!demoUserExists) {
-      const demoUser = {
-        id: 'demo-user-1',
-        fullName: 'Demo',
-        surname: 'User',
-        nickname: 'EcoLearner',
-        email: 'demo@game2grow.edu',
-        phoneNumber: '+91 12345 67890',
-        category: 'high-school' as UserCategory,
-        password: 'demo123',
-        points: 350,
-        level: 4,
-        achievements: ['first-quiz'],
-        joinedAt: new Date('2024-01-15'),
-      };
-      
-      storedUsers.push(demoUser);
-      localStorage.setItem('game2grow_users', JSON.stringify(storedUsers));
-    }
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        setSession(session);
+        
+        if (session?.user) {
+          // Fetch user profile from database
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('user_id', session.user.id)
+            .single();
+          
+          if (profile) {
+            setUser(profile);
+            setIsAuthenticated(true);
+          }
+        } else {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+        setLoading(false);
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setSession(session);
+      } else {
+        setLoading(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    // Simulate API call - in real app, this would be an actual API request
-    const storedUsers = JSON.parse(localStorage.getItem('game2grow_users') || '[]');
-    const foundUser = storedUsers.find((u: any) => u.email === email && u.password === password);
-    
-    if (foundUser) {
-      const { password: _, ...userWithoutPassword } = foundUser;
-      setUser(userWithoutPassword);
-      setIsAuthenticated(true);
-      localStorage.setItem('game2grow_user', JSON.stringify(userWithoutPassword));
-      return true;
-    }
-    return false;
-  };
-
-  const register = async (userData: Omit<User, 'id' | 'points' | 'level' | 'achievements' | 'joinedAt'> & { password: string }): Promise<boolean> => {
-    // Simulate API call - in real app, this would be an actual API request
-    const storedUsers = JSON.parse(localStorage.getItem('game2grow_users') || '[]');
-    
-    // Check if user already exists
-    if (storedUsers.find((u: any) => u.email === userData.email)) {
-      return false;
-    }
-
-    const newUser: User & { password: string } = {
-      ...userData,
-      id: Date.now().toString(),
-      points: 0,
-      level: 1,
-      achievements: [],
-      joinedAt: new Date(),
-    };
-
-    storedUsers.push(newUser);
-    localStorage.setItem('game2grow_users', JSON.stringify(storedUsers));
-
-    // Log the user in immediately
-    const { password: _, ...userWithoutPassword } = newUser;
-    setUser(userWithoutPassword);
-    setIsAuthenticated(true);
-    localStorage.setItem('game2grow_user', JSON.stringify(userWithoutPassword));
-    
-    return true;
-  };
-
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('game2grow_user');
-  };
-
-  const updatePoints = (points: number) => {
-    if (user) {
-      const updatedUser = { 
-        ...user, 
-        points: user.points + points,
-        level: Math.floor((user.points + points) / 100) + 1 // Simple level calculation
-      };
-      setUser(updatedUser);
-      localStorage.setItem('game2grow_user', JSON.stringify(updatedUser));
+  const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
       
-      // Update in users list too
-      const storedUsers = JSON.parse(localStorage.getItem('game2grow_users') || '[]');
-      const userIndex = storedUsers.findIndex((u: any) => u.id === user.id);
-      if (userIndex !== -1) {
-        storedUsers[userIndex] = { ...storedUsers[userIndex], points: updatedUser.points, level: updatedUser.level };
-        localStorage.setItem('game2grow_users', JSON.stringify(storedUsers));
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'An unexpected error occurred' };
+    }
+  };
+
+  const register = async (userData: { username: string; email: string; password: string; category: UserCategory }): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const redirectUrl = `${window.location.origin}/`;
+      
+      const { error } = await supabase.auth.signUp({
+        email: userData.email,
+        password: userData.password,
+        options: {
+          emailRedirectTo: redirectUrl,
+          data: {
+            username: userData.username,
+            category: userData.category
+          }
+        }
+      });
+      
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'An unexpected error occurred' };
+    }
+  };
+
+  const logout = async (): Promise<void> => {
+    await supabase.auth.signOut();
+    setUser(null);
+    setSession(null);
+    setIsAuthenticated(false);
+  };
+
+  const updatePoints = async (points: number): Promise<void> => {
+    if (user && session) {
+      const newPoints = user.points + points;
+      const newLevel = Math.floor(newPoints / 100) + 1;
+      
+      const { error } = await supabase
+        .from('profiles')
+        .update({ 
+          points: newPoints,
+          level: newLevel
+        })
+        .eq('user_id', session.user.id);
+      
+      if (!error) {
+        setUser({ ...user, points: newPoints, level: newLevel });
+        toast({
+          title: "Points Updated!",
+          description: `You earned ${points} points!`,
+        });
       }
     }
   };
 
-  const addAchievement = (achievement: string) => {
-    if (user && !user.achievements.includes(achievement)) {
-      const updatedUser = { 
-        ...user, 
-        achievements: [...user.achievements, achievement]
-      };
-      setUser(updatedUser);
-      localStorage.setItem('game2grow_user', JSON.stringify(updatedUser));
+  const addAchievement = async (title: string, description?: string): Promise<void> => {
+    if (user && session) {
+      const { error } = await supabase
+        .from('achievements')
+        .insert({
+          user_id: session.user.id,
+          title,
+          description
+        });
       
-      // Update in users list too
-      const storedUsers = JSON.parse(localStorage.getItem('game2grow_users') || '[]');
-      const userIndex = storedUsers.findIndex((u: any) => u.id === user.id);
-      if (userIndex !== -1) {
-        storedUsers[userIndex] = { ...storedUsers[userIndex], achievements: updatedUser.achievements };
-        localStorage.setItem('game2grow_users', JSON.stringify(storedUsers));
+      if (!error) {
+        toast({
+          title: "Achievement Unlocked!",
+          description: `You earned: ${title}`,
+        });
       }
     }
   };
 
   const value: AuthContextType = {
     user,
+    session,
     login,
     register,
     logout,
     updatePoints,
     addAchievement,
     isAuthenticated,
+    loading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -24,9 +24,9 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const success = await login(formData.email, formData.password);
+      const result = await login(formData.email, formData.password);
       
-      if (success) {
+      if (result.success) {
         toast({
           title: "Welcome back!",
           description: "You've successfully logged in to Game2Grow.",
@@ -35,7 +35,7 @@ const Login = () => {
       } else {
         toast({
           title: "Login failed",
-          description: "Invalid email or password. Please try again.",
+          description: result.error || "Invalid email or password. Please try again.",
           variant: "destructive",
         });
       }

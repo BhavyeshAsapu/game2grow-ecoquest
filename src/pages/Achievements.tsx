@@ -1,8 +1,9 @@
 import React from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { useAuth } from '@/contexts/AuthContext';
+import { useLeaderboard } from '@/hooks/useLeaderboard';
 import { 
   Trophy, 
   Award, 
@@ -37,7 +38,7 @@ const Achievements = () => {
     ...leaderboard,
     { 
       rank: leaderboard.length + 1, 
-      name: user.nickname, 
+      name: user.username, 
       points: user.points, 
       level: user.level, 
       category: user.category,

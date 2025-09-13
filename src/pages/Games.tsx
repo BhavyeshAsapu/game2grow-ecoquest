@@ -725,10 +725,7 @@ const Games = () => {
       if (isAuthenticated && user) {
         processedQuizzes = processedQuizzes.map(quiz => ({
           ...quiz,
-          recommended: quiz.category === user.category || 
-                      (user.category === 'middle-school' && quiz.category === 'preschool') ||
-                      (user.category === 'high-school' && ['middle-school', 'preschool'].includes(quiz.category)) ||
-                      (user.category === 'college' && ['high-school', 'middle-school'].includes(quiz.category))
+          recommended: quiz.category === user.category
         }));
 
         // Sort recommended quizzes first
@@ -884,7 +881,7 @@ const Games = () => {
           <div className="flex items-start space-x-3">
             <Zap className="w-6 h-6 text-primary mt-1 animate-pulse" />
             <div>
-              <h3 className="font-semibold text-primary mb-1">AI Recommendations for {user?.nickname}</h3>
+              <h3 className="font-semibold text-primary mb-1">AI Recommendations for {user?.username}</h3>
               <p className="text-sm text-muted-foreground">
                 Based on your {getCategoryLabel(user?.category || '')} level, we've highlighted the most suitable quizzes for you. 
                 Recommended quizzes are marked with a ⭐ and appear first in the list.

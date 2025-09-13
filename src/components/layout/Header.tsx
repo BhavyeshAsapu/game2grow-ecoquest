@@ -84,7 +84,7 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="flex items-center space-x-2">
                     <User className="w-4 h-4" />
-                    <span className="hidden sm:inline">{user?.nickname}</span>
+                    <span className="hidden sm:inline">{user?.username}</span>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
@@ -150,7 +150,7 @@ const Header = () => {
                           <User className="w-5 h-5 text-primary" />
                         </div>
                         <div>
-                          <p className="font-medium">{user?.nickname}</p>
+                          <p className="font-medium">{user?.username}</p>
                           <p className="text-sm text-muted-foreground">{user?.points} points</p>
                         </div>
                       </div>

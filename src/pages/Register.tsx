@@ -91,25 +91,22 @@ const Register = () => {
 
     try {
       const success = await register({
-        fullName: formData.fullName,
-        surname: formData.surname,
-        nickname: formData.nickname,
+        username: formData.nickname || formData.fullName,
         email: formData.email,
-        phoneNumber: formData.phoneNumber,
-        category: formData.category,
+        category: formData.category as UserCategory,
         password: formData.password
       });
       
-      if (success) {
+      if (success.success) {
         toast({
           title: "Welcome to Game2Grow!",
-          description: "Your account has been created successfully. Start your environmental journey now!",
+          description: "Your account has been created successfully. Please check your email to verify your account.",
         });
         navigate('/');
       } else {
         toast({
           title: "Registration failed",
-          description: "This email is already registered. Please try logging in instead.",
+          description: success.error || "Something went wrong. Please try again.",
           variant: "destructive",
         });
       }
