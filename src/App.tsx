@@ -15,6 +15,7 @@ import Games from "./pages/Games";
 import Videos from "./pages/Videos";
 import Profile from "./pages/Profile";
 import Achievements from "./pages/Achievements";
+import Rewards from "./pages/Rewards";
 import Quiz from "./pages/Quiz";
 import NotFound from "./pages/NotFound";
 
@@ -47,6 +48,7 @@ const AppContent = () => {
           <Route path="/videos" element={<Videos />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/achievements" element={<Achievements />} />
+          <Route path="/rewards" element={<Rewards />} />
           <Route path="/quiz/:id" element={<Quiz />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

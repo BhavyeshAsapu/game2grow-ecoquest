@@ -44,6 +44,9 @@ const Footer = () => {
               <Link to="/achievements" className="text-muted-foreground hover:text-primary transition-colors">
                 Achievements
               </Link>
+              <Link to="/rewards" className="text-muted-foreground hover:text-primary transition-colors">
+                Rewards
+              </Link>
               <Link to="/register" className="text-muted-foreground hover:text-primary transition-colors">
                 Join Now
               </Link>

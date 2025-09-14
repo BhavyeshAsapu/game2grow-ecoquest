@@ -158,10 +158,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       if (!error) {
         setUser({ ...user, points: newPoints, level: newLevel });
-        toast({
-          title: "Points Updated!",
-          description: `You earned ${points} points!`,
-        });
+        if (points > 0) {
+          toast({
+            title: "Points Updated!",
+            description: `You earned ${points} points!`,
+          });
+        }
       }
     }
   };

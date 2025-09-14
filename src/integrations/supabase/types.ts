@@ -85,12 +85,80 @@ export type Database = {
         }
         Relationships: []
       }
+      reward_purchases: {
+        Row: {
+          created_at: string
+          id: string
+          reward_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          reward_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reward_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_purchases_reward_id_fkey"
+            columns: ["reward_id"]
+            isOneToOne: false
+            referencedRelation: "rewards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      rewards: {
+        Row: {
+          active: boolean
+          cost: number
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          cost: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          cost?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      redeem_reward: {
+        Args: { p_reward_id: string }
+        Returns: {
+          new_points: number
+          purchase_id: string
+        }[]
+      }
     }
     Enums: {
       user_category: "student" | "teacher" | "parent" | "other"
