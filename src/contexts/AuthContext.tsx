@@ -57,29 +57,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     // Set up auth state listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        setSession(session);
-        
-        if (session?.user) {
-          // Fetch user profile from database
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setSession(session);
+      
+      if (session?.user) {
+        // Defer Supabase calls to avoid deadlocks per best practices
+        setTimeout(async () => {
           const { data: profile } = await supabase
             .from('profiles')
             .select('*')
             .eq('user_id', session.user.id)
-            .single();
+            .maybeSingle();
           
           if (profile) {
-            setUser(profile);
+            setUser(profile as User);
+            setIsAuthenticated(true);
+          } else {
             setIsAuthenticated(true);
           }
-        } else {
-          setUser(null);
-          setIsAuthenticated(false);
-        }
+          setLoading(false);
+        }, 0);
+      } else {
+        setUser(null);
+        setIsAuthenticated(false);
         setLoading(false);
       }
-    );
+    });
 
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -113,6 +116,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const register = async (userData: { username: string; email: string; password: string; category: UserCategory }): Promise<{ success: boolean; error?: string }> => {
     try {
       const redirectUrl = `${window.location.origin}/`;
+      // Sanitize category to match DB enum
+      const allowed: UserCategory[] = ['student','teacher','parent','other'];
+      const safeCategory: UserCategory = allowed.includes(userData.category as UserCategory) ? userData.category : 'student';
       
       const { error } = await supabase.auth.signUp({
         email: userData.email,
@@ -121,7 +127,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           emailRedirectTo: redirectUrl,
           data: {
             username: userData.username,
-            category: userData.category
+            category: safeCategory
           }
         }
       });

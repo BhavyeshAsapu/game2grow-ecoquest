@@ -157,13 +157,9 @@ const Login = () => {
 
             {/* Demo Credentials */}
             <div className="mt-8 p-4 bg-muted/50 rounded-lg">
-              <p className="text-xs text-muted-foreground text-center mb-2">
-                Demo Account (for testing):
+              <p className="text-xs text-muted-foreground text-center">
+                For testing, please create an account using Register and then sign in.
               </p>
-              <div className="text-xs space-y-1 text-center">
-                <p><strong>Email:</strong> demo@game2grow.edu</p>
-                <p><strong>Password:</strong> demo123</p>
-              </div>
             </div>
           </CardContent>
         </Card>
